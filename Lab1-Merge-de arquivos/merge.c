@@ -128,7 +128,10 @@ int main(int argc, char *argv[]){
     // Closes files and frees memory
     fclose(fileptr1 );
     fclose(fileptr2 );
+    fclose(output_file);
     free  (output);
+    free  (file1) ;
+    free  (file2) ;
 
     return 0;
 }
