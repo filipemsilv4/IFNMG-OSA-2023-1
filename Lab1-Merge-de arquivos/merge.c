@@ -2,11 +2,11 @@
 // Date: 16th of February 2023
 // Description: Merges two files in alphabetical order (See README.md for more information)
 
-// Usage: ./merge.exe , then type the names of the files to be merged
+// Usage: ./merge.exe , then input of the files to be merged
 
-// If the file is not in the same directory as the executable, you need to specify the path as an argument
-// Example: If the folder is in the same directory as the executable: ./merge.exe ./TestFiles/
-// Example: If the folder is not in the same directory as the executable: ./merge.exe /home/user/TestFiles/
+// If the files are not in the same directory as the program, and both are in the same directory, you can specify the path as an argument when running the program in order to avoid having to input the path twice
+// Example: If the folder with the files is in the same directory as the program: ./merge.exe ./TestFiles/
+// Example: If the folder with the files is not in the same directory as the program: ./merge.exe /home/user/TestFiles/
 
 
 #include <stdlib.h>
@@ -76,7 +76,8 @@ int main(int argc, char *argv[]){
             while (fread(&size2, sizeof(long long int), 1, fileptr2) == 1){ // So, copy the rest of the file 2 to the output file
                 fwrite(&size2, sizeof(long long int), 1, output_file);
                 str2 = malloc(size2);
-                fread (str2, sizeof(char), size2, fileptr2)     ;
+                fread (str2, sizeof(char), size2, fileptr2)   ;
+                printf("%s\n", str2);
                 fwrite(str2, sizeof(char), size2, output_file);
                 free(str2);
             }
@@ -95,6 +96,7 @@ int main(int argc, char *argv[]){
                 fwrite(&size1, sizeof(long long int), 1, output_file);
                 str1 = malloc(size1);
                 fread (str1, sizeof(char), size1, fileptr1)   ;
+                printf("%s\n", str1);
                 fwrite(str1, sizeof(char), size1, output_file);
                 free(str1);
             }
@@ -107,7 +109,7 @@ int main(int argc, char *argv[]){
         // Compare the strings
         // If the string from file 1 is smaller or is a number, write it to the output file
         if (strcmp(str1, str2) < 0 || isdigit(str1[0])){ 
-            //printf("str1: %s < str2 %s\n", str1, str2);
+            printf("%s\n", str1);
             fwrite(&size1, sizeof(long long int), 1, output_file);
             fwrite(str1, sizeof(char), size1, output_file);
             free(str1);
@@ -115,7 +117,7 @@ int main(int argc, char *argv[]){
             fseek(fileptr2, -sizeof(long long int), SEEK_CUR);
             fseek(fileptr2, -size2, SEEK_CUR); 
         } else {
-            //printf("str2: %s < str1\n", str2, str1);
+            printf("%s\n", str2);
             fwrite(&size2, sizeof(long long int), 1, output_file);
             fwrite(str2, sizeof(char), size2, output_file);
             free(str2);
