@@ -20,7 +20,7 @@
 #define ever (;;)
 
 
-bool file_error(FILE *file, char *file_name);
+FILE* open_file(char *file_name, char *mode);
 
 
 int main(int argc, char *argv[]){
@@ -53,11 +53,8 @@ int main(int argc, char *argv[]){
     }
 
     // Open files
-    FILE *fileptr1 = fopen(file1, "rb");
-    if (file_error(fileptr1, file1) == true) return 1;
-
-    FILE *fileptr2 = fopen(file2, "rb");
-    if (file_error(fileptr2, file2) == true) return 1;
+    FILE *fileptr1 = open_file(file1, "rb");
+    FILE *fileptr2 = open_file(file2, "rb");
 
     // Create output file name
     char *output = malloc(strlen(file1) + strlen(".merge") + 1);
@@ -65,8 +62,7 @@ int main(int argc, char *argv[]){
     strcat(output, ".merge");
 
     // Open output file
-    FILE *output_file = fopen(output, "wb");
-    if (file_error(output_file, output) == true) return 1;
+    FILE *output_file = open_file(output, "wb");
 
     for ever{
         long long int size1, size2;
@@ -138,14 +134,16 @@ int main(int argc, char *argv[]){
     return 0;
 }
 
-
-// Function that checks if the file was opened correctly, returning true if there is an error
-bool file_error(FILE *file, char *file_name){
+// Function that opens a file and checks if it was opened correctly, returns a pointer to the file
+FILE* open_file(char *file_name, char *mode){
+    FILE *file = fopen(file_name, mode);
+    
     if (file == NULL){
         printf("Error opening file %s\n", file_name);
-        return true;
+        exit(1);
     }
-    return false;
+
+    return file;
 }
 
 
